@@ -1,0 +1,1 @@
+DG.put("krisnaavtaar/1",{"n":1,"title":null,"title_roman":null,"page":329,"blocks":[{"type":"verse","number":null,"number_text":null,"page":329,"lines":[{"gurmukhi":"ਸ੍ਰੀ ਅਕਾਲ ਪੁਰਖ ਜੀ ਸਹਾਇ","roman":"Sree akaal purakh jee sahaai","meaning_en":"","page":329}],"flags":[{"code":"structure","reason":"verse has no number (ended by section heading)"}]}],"ending":null});

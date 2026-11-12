@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pa">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Sri Dasam Granth</title>
+<link rel="stylesheet" href="app.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1d4f91">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dasam Granth">
+<script>
+  /* apply the saved theme before first paint */
+  try { var t = localStorage.getItem("dg.theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+</head>
+<body>
+<header class="bar">
+  <button id="back" class="icon" aria-label="Back" hidden>&#8592;</button>
+  <a id="home" class="brand" href="#/">ਸ੍ਰੀ ਦਸਮ ਗ੍ਰੰਥ</a>
+  <span id="where" class="where"></span>
+  <button id="searchBtn" class="icon" aria-label="Search in this bani" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button>
+  <button id="settingsBtn" class="icon" aria-label="Reading settings">Aa</button>
+</header>
+
+<div id="settings" class="panel" hidden>
+  <fieldset>
+    <legend>Show</legend>
+    <label><input type="checkbox" id="showGu" checked> Gurmukhi</label>
+    <label><input type="checkbox" id="showRo"> Roman</label>
+    <label><input type="checkbox" id="showEn"> English (draft)</label>
+  </fieldset>
+  <label class="row">Text size <input type="range" id="size" min="16" max="36" step="1"></label>
+  <fieldset>
+    <legend>Theme</legend>
+    <label><input type="radio" name="theme" value="auto"> Device</label>
+    <label><input type="radio" name="theme" value="light"> Light</label>
+    <label><input type="radio" name="theme" value="dark"> Dark</label>
+  </fieldset>
+  <fieldset id="offlineBox" hidden>
+    <legend>Offline</legend>
+    <button id="installBtn" class="btn" hidden>Install as an app</button>
+    <button id="saveAllBtn" class="btn">Save all banis for offline use</button>
+    <div id="offlineStatus" class="small muted"></div>
+    <div id="iosHint" class="small muted" hidden>On iPhone: tap Share, then “Add to Home Screen”.</div>
+  </fieldset>
+</div>
+
+<div id="searchPanel" class="panel" hidden>
+  <input id="q" type="search" placeholder="Search this bani (Gurmukhi or Roman)" autocomplete="off">
+  <div id="qStatus" class="muted small"></div>
+  <ol id="results"></ol>
+</div>
+
+<main id="view" tabindex="-1"></main>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

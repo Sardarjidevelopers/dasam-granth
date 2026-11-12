@@ -1,0 +1,1 @@
+DG.put("krisnaavtaar/99",{"n":99,"title":"ਅਥ ਮਿਥਲਾਪੁਰ ਰਾਜੇ ਅਰੁ ਬ੍ਰਾਹਮਨ ਕਾ ਪ੍ਰਸੰਗੁ ਅਰੁ ਭਸਮਾਂਗਦ ਦੈਤ","title_roman":"Ath mithlaapur raaje aru braahman kaa prasangu aru bhasmaangad dait","page":716,"blocks":[],"ending":null});

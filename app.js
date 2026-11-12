@@ -25,19 +25,20 @@
 
   /* ---------- settings ---------- */
   function store(k, v) { try { if (v === undefined) return localStorage.getItem("dg." + k); localStorage.setItem("dg." + k, v); } catch (e) { return null; } }
-  var prefs = { gu: store("gu") !== "0", ro: store("ro") === "1", en: store("en") === "1", size: +store("size") || 22, theme: store("theme") || "auto" };
+  var prefs = { gu: store("gu") !== "0", ro: store("ro") === "1", en: store("en") === "1", pa: store("pa") === "1", size: +store("size") || 22, theme: store("theme") || "auto" };
 
   function applyPrefs() {
     document.body.classList.toggle("no-gu", !prefs.gu);
     document.body.classList.toggle("no-ro", !prefs.ro);
     document.body.classList.toggle("no-en", !prefs.en);
+    document.body.classList.toggle("no-pa", !prefs.pa);
     document.documentElement.style.setProperty("--gsize", prefs.size + "px");
     if (prefs.theme === "auto") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = prefs.theme;
-    $("showGu").checked = prefs.gu; $("showRo").checked = prefs.ro; $("showEn").checked = prefs.en;
+    $("showGu").checked = prefs.gu; $("showRo").checked = prefs.ro; $("showEn").checked = prefs.en; $("showPa").checked = prefs.pa;
     $("size").value = prefs.size;
     document.querySelectorAll("input[name=theme]").forEach(function (r) { r.checked = r.value === prefs.theme; });
     var note = document.getElementById("noMeanings");
-    if (note) note.hidden = !prefs.en;
+    if (note) note.hidden = !(prefs.en || prefs.pa);
   }
 
   /* ---------- helpers ---------- */
@@ -83,6 +84,13 @@
     var d = el("div", "ln" + (cls ? " " + cls : ""));
     d.appendChild(el("div", "gu gu-line", ln.gurmukhi));
     d.appendChild(el("div", "ro", ln.roman));
+    if (ln.meaning_pa) {
+      var pa = el("div", "pa");
+      pa.appendChild(el("span", "draft", "ਡਰਾਫਟ ਅਰਥ"));
+      pa.appendChild(document.createTextNode(ln.meaning_pa));
+      if (ln.note_pa) pa.appendChild(el("span", "note", "ਨੋਟ: " + ln.note_pa));
+      d.appendChild(pa);
+    }
     if (ln.meaning_en) {
       var en = el("div", "en");
       en.appendChild(el("span", "draft", "draft meaning"));
@@ -205,7 +213,7 @@
       if (b.section_list.length > 1) v.appendChild(sectionPicker(b, n));
       provenance(v, b);
       var nm = el("div", "note-box", "No English meanings have been written for this " + (b.meaning_lines ? "part" : "bani") + " yet.");
-      nm.id = "noMeanings"; nm.hidden = !prefs.en;
+      nm.id = "noMeanings"; nm.hidden = !(prefs.en || prefs.pa);
       if (!sectionHasMeaning(sec, si === 0 ? b : null)) v.appendChild(nm);
       if (si === 0 && b.invocations.length) {
         b.invocations.forEach(function (ln) { var d = el("div", "blk invocation"); d.appendChild(lineEl(ln)); d.appendChild(metaRow(b, ln, sources)); v.appendChild(d); });
@@ -245,8 +253,8 @@
   }
 
   function sectionHasMeaning(sec, baniForInvocations) {
-    if (baniForInvocations && baniForInvocations.invocations.some(function (l) { return l.meaning_en; })) return true;
-    return sec.blocks.some(function (b) { return (b.lines || [b]).some(function (l) { return l.meaning_en; }); });
+    if (baniForInvocations && baniForInvocations.invocations.some(function (l) { return l.meaning_en || l.meaning_pa; })) return true;
+    return sec.blocks.some(function (b) { return (b.lines || [b]).some(function (l) { return l.meaning_en || l.meaning_pa; }); });
   }
 
   function blockEl(b, bl, sources) {
@@ -399,10 +407,10 @@
   });
   var qTimer = null;
   $("q").addEventListener("input", function () { clearTimeout(qTimer); qTimer = setTimeout(runSearch, 250); });
-  [["showGu", "gu"], ["showRo", "ro"], ["showEn", "en"]].forEach(function (p) {
+  [["showGu", "gu"], ["showRo", "ro"], ["showEn", "en"], ["showPa", "pa"]].forEach(function (p) {
     $(p[0]).addEventListener("change", function (e) {
       prefs[p[1]] = e.target.checked;
-      if (!prefs.gu && !prefs.ro && !prefs.en) { prefs.gu = true; }  // never hide everything
+      if (!prefs.gu && !prefs.ro && !prefs.en && !prefs.pa) { prefs.gu = true; }  // never hide everything
       store(p[1], prefs[p[1]] ? "1" : "0"); store("gu", prefs.gu ? "1" : "0");
       applyPrefs();
     });

@@ -86,7 +86,7 @@
     d.appendChild(el("div", "ro", ln.roman));
     if (ln.meaning_pa) {
       var pa = el("div", "pa");
-      pa.appendChild(el("span", "draft", "ਡਰਾਫਟ ਅਰਥ"));
+      pa.appendChild(el("span", "draft", ln.meaning_pa_source === "BaniDB" ? "ਪੰਜਾਬੀ ਅਰਥ · BaniDB" : "ਡਰਾਫਟ ਅਰਥ"));
       pa.appendChild(document.createTextNode(ln.meaning_pa));
       if (ln.note_pa) pa.appendChild(el("span", "note", "ਨੋਟ: " + ln.note_pa));
       d.appendChild(pa);
